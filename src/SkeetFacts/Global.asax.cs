@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -8,6 +9,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
@@ -55,22 +57,55 @@ namespace SkeetFacts
         {
             if (DocumentStore != null) return; // prevent misuse
 
-            DocumentStore = new DocumentStore
+            var environmentName = ConfigurationManager.AppSettings.Get("Environment");
+
+            switch (environmentName)
             {
-                ConnectionStringName = "RavenDB"
-            }.Initialize();
+                case "Debug":
+                    DocumentStore =  GetLocalDebugDocumentStore();
+                    break;
+                case "Release":
+                    DocumentStore = GetProductionDocumentStore();
+                    break;
+                default:
+                    throw new ArgumentException("environmentName");
+            }
 
             TryCreatingIndexesOrRedirectToErrorPage();
 
-            RavenProfiler.InitializeFor(DocumentStore, "Email", "Password", "Username");
             //Fields to filter out of the output
+            RavenProfiler.InitializeFor(DocumentStore, "Email", "Password", "Username"); 
+        }
+
+        private static IDocumentStore GetLocalDebugDocumentStore()
+        {
+            var store = new DocumentStore
+                        {
+                            ConnectionStringName = "RavenDB"
+                        }.Initialize();
+
+            return store;
+        }
+
+        private static IDocumentStore GetProductionDocumentStore()
+        {
+            var parser = ConnectionStringParser<RavenConnectionStringOptions>.FromConnectionStringName("RavenDB");
+            parser.Parse();
+
+            var store = new DocumentStore
+            {
+                ApiKey = parser.ConnectionStringOptions.ApiKey,
+                Url = parser.ConnectionStringOptions.Url,
+            };
+
+            return store;
         }
 
         private static void TryCreatingIndexesOrRedirectToErrorPage()
         {
             try
             {
-                IndexCreation.CreateIndexesAsync(Assembly.GetAssembly(typeof (Fact)), DocumentStore);
+                IndexCreation.CreateIndexesAsync(Assembly.GetAssembly(typeof(Fact)), DocumentStore);
             }
             catch (WebException e)
             {
