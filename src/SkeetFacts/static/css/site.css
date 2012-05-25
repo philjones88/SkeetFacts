@@ -1,0 +1,54 @@
+﻿body
+{
+    font-family: Arial;
+    font-size: 12px;
+}
+
+.skeet
+{
+    background: url("/static/images/skeet.png") top left no-repeat;
+    width: 204px;
+    height: 197px;
+    float: left;
+}
+
+.quote
+{
+    float: left;
+    position: relative;
+    min-width: 400px;
+    max-width: 600px;
+}
+
+.quote-top
+{
+    background: url("/static/images/quote-top.png") top left no-repeat;
+    width: 63px;
+    height: 46px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.quote-bottom
+{
+    background: url("/static/images/quote-bottom.png") top left no-repeat;
+    width: 63px;
+    height: 46px;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
+
+.quote-text
+{
+    padding: 60px;
+    font-size: 18px;
+}
+
+.footer
+{
+    padding-top: 20px;
+    font-size: 11px;
+    clear: both;
+}

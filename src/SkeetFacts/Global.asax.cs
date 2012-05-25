@@ -12,6 +12,7 @@ using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Client.MvcIntegration;
+using SkeetFacts.Controllers;
 using SkeetFacts.Models;
 
 namespace SkeetFacts
@@ -30,7 +31,7 @@ namespace SkeetFacts
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
+                new { controller = "Facts", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
 
         }
@@ -46,6 +47,8 @@ namespace SkeetFacts
             RegisterRoutes(RouteTable.Routes);
 
             InitializeDocumentStore();
+
+            RavenController.DocumentStore = DocumentStore;
         }
 
         private static void InitializeDocumentStore()

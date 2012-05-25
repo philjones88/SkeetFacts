@@ -1,0 +1,14 @@
+﻿@model SkeetFacts.Models.Fact
+
+@{
+    ViewBag.Title = "Random Jon Skeet Facts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="skeet"></div>
+
+<div class="quote">
+    <div class="quote-top"></div>
+    <div class="quote-text">@Model.Content</div>
+    <div class="quote-bottom"></div>
+</div>
