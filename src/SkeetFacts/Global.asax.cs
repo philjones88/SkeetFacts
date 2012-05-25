@@ -94,14 +94,14 @@ namespace SkeetFacts
             {
                 ApiKey = parser.ConnectionStringOptions.ApiKey,
                 Url = parser.ConnectionStringOptions.Url,
-            };
+            }.Initialize();
         }
 
         private static void TryCreatingIndexesOrRedirectToErrorPage()
         {
             try
             {
-                IndexCreation.CreateIndexesAsync(Assembly.GetAssembly(typeof(Fact)), DocumentStore);
+                IndexCreation.CreateIndexes(Assembly.GetAssembly(typeof(Fact)), DocumentStore);
             }
             catch (WebException e)
             {
