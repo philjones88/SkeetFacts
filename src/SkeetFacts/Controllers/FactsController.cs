@@ -21,10 +21,10 @@ namespace SkeetFacts.Controllers
         }
 
         [HttpGet]
-        public string Create()
+        public ActionResult Create()
         {
             if (RavenSession.Query<Fact, Facts_QueryIndex>().Any())
-                return "Already populated.";
+                return RedirectToAction("Index");
 
             var facts = new List<Fact> 
             { 
@@ -80,7 +80,7 @@ namespace SkeetFacts.Controllers
                 RavenSession.Store(fact);
             }
 
-            return "Creating...";
+            return RedirectToAction("Index");
         }
     }
 }
