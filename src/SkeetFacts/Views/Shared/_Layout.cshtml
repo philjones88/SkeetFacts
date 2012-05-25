@@ -1,15 +1,16 @@
 ﻿<!DOCTYPE html>
 <html>
-<head>
-    <title>@ViewBag.Title</title>
-    <link href="@Url.Content("~/static/css/site.css")" rel="stylesheet" type="text/css" />
-</head>
+    <head>
+        <title>@ViewBag.Title</title>
+        <link href="@Url.Content("~/static/css/site.css")" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        @if (System.Configuration.ConfigurationManager.AppSettings.Get("Environment") == "Debug"){
+            @Raven.Client.MvcIntegration.RavenProfiler.CurrentRequestSessions()
+        }
+        @RenderBody()
 
-<body>
-    @RenderBody()
+        <div class="footer">A sample app for DDDSW Grok talk on AppHarbor. Hint, refresh for a new fact. No offense intended :) Source Code <a href="https://github.com/philjones88/SkeetFacts">here</a></div>
 
-    <div class="footer">A sample app for DDDSW Grok talk on AppHarbor. Hint, refresh for a new fact. No offense intended :) Source Code <a href="https://github.com/philjones88/SkeetFacts">here</a></div>
-
-@Raven.Client.MvcIntegration.RavenProfiler.CurrentRequestSessions()
-</body>
+    </body>
 </html>
