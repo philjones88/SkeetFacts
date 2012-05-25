@@ -62,10 +62,10 @@ namespace SkeetFacts
             switch (environmentName)
             {
                 case "Debug":
-                    DocumentStore =  GetLocalDebugDocumentStore();
+                    GetLocalDebugDocumentStore();
                     break;
                 case "Release":
-                    DocumentStore = GetProductionDocumentStore();
+                    GetProductionDocumentStore();
                     break;
                 default:
                     throw new ArgumentException("environmentName");
@@ -77,28 +77,24 @@ namespace SkeetFacts
             RavenProfiler.InitializeFor(DocumentStore, "Email", "Password", "Username"); 
         }
 
-        private static IDocumentStore GetLocalDebugDocumentStore()
+        private static void GetLocalDebugDocumentStore()
         {
-            var store = new DocumentStore
+            DocumentStore = new DocumentStore
                         {
                             ConnectionStringName = "RavenDB"
                         }.Initialize();
-
-            return store;
         }
 
-        private static IDocumentStore GetProductionDocumentStore()
+        private static void GetProductionDocumentStore()
         {
             var parser = ConnectionStringParser<RavenConnectionStringOptions>.FromConnectionStringName("RavenDB");
             parser.Parse();
 
-            var store = new DocumentStore
+            DocumentStore = new DocumentStore
             {
                 ApiKey = parser.ConnectionStringOptions.ApiKey,
                 Url = parser.ConnectionStringOptions.Url,
             };
-
-            return store;
         }
 
         private static void TryCreatingIndexesOrRedirectToErrorPage()
