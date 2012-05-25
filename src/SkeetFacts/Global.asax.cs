@@ -57,7 +57,7 @@ namespace SkeetFacts
 
             DocumentStore = new DocumentStore
             {
-                ConnectionStringName = "RAVENHQ_CONNECTION_STRING"
+                ConnectionStringName = "RavenDB"
             }.Initialize();
 
             TryCreatingIndexesOrRedirectToErrorPage();
